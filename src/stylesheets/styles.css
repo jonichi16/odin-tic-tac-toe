@@ -1,0 +1,12 @@
+body {
+  background-color: #07273b;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 1em 0;
+}
