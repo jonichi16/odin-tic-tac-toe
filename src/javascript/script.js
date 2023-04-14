@@ -3,6 +3,7 @@ const gameBoard = (() => {
   const cells = document.querySelectorAll('.board-cell');
 
   const getCells = () => cells;
+  const isValidMove = (move) => board[move] === '';
 
   const displayCurrentBoard = () => {
     cells.forEach((cell, index) => {
@@ -12,9 +13,7 @@ const gameBoard = (() => {
   };
 
   const updateBoard = (index, token) => {
-    if (board[index] === '') {
-      board[index] = token;
-    }
+    board[index] = token;
     displayCurrentBoard();
   };
 
@@ -22,6 +21,7 @@ const gameBoard = (() => {
     getCells,
     displayCurrentBoard,
     updateBoard,
+    isValidMove,
   };
 })();
 
@@ -61,17 +61,19 @@ const gameController = (() => {
       cell.addEventListener('click', (e) => {
         e.preventDefault();
 
-        gameBoard.updateBoard(index, currentPlayer.getToken());
-        switchPlayer();
-        displayPlayerTurn();
+        if (gameBoard.isValidMove(index)) {
+          gameBoard.updateBoard(index, currentPlayer.getToken());
+          switchPlayer();
+          displayPlayerTurn();
+        }
       });
     });
     gameBoard.displayCurrentBoard();
+    displayPlayerTurn();
   };
 
   const play = () => {
     init();
-    displayPlayerTurn();
   };
 
   return {
