@@ -1,9 +1,35 @@
 const gameBoard = (() => {
   const board = ['', '', '', '', '', '', '', '', ''];
+  const winConditions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
   const cells = document.querySelectorAll('.board-cell');
 
   const getCells = () => cells;
   const isValidMove = (move) => board[move] === '';
+  const isBoardFull = () => !board.includes('');
+
+  const isBoardWin = (token) => {
+    let win = false;
+    for (let i = 0; i < winConditions.length; i += 1) {
+      if (
+        board[winConditions[i][0]] === token &&
+        board[winConditions[i][1]] === token &&
+        board[winConditions[i][2]] === token
+      ) {
+        win = true;
+        break;
+      }
+    }
+    return win;
+  };
 
   const displayCurrentBoard = () => {
     cells.forEach((cell, index) => {
@@ -22,6 +48,8 @@ const gameBoard = (() => {
     displayCurrentBoard,
     updateBoard,
     isValidMove,
+    isBoardFull,
+    isBoardWin,
   };
 })();
 
@@ -49,11 +77,23 @@ const gameController = (() => {
   let currentPlayer = playerOne;
 
   const displayPlayerTurn = () => {
-    currentPlayer.displayPlayer();
+    if (!gameOver) {
+      currentPlayer.displayPlayer();
+    }
   };
 
   const switchPlayer = () => {
-    currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
+    if (!gameOver) {
+      currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
+    }
+  };
+
+  const gameCheck = (player) => {
+    if (gameBoard.isBoardWin(player.getToken())) {
+      gameOver = true;
+    } else if (gameBoard.isBoardFull()) {
+      gameOver = true;
+    }
   };
 
   const init = () => {
@@ -61,8 +101,9 @@ const gameController = (() => {
       cell.addEventListener('click', (e) => {
         e.preventDefault();
 
-        if (gameBoard.isValidMove(index)) {
+        if (gameBoard.isValidMove(index) && !gameOver) {
           gameBoard.updateBoard(index, currentPlayer.getToken());
+          gameCheck(currentPlayer);
           switchPlayer();
           displayPlayerTurn();
         }
