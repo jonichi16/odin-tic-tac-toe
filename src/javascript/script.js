@@ -11,8 +11,10 @@ const gameBoard = (() => {
     });
   };
 
-  const updateBoard = (move, token) => {
-    board[move] = token;
+  const updateBoard = (index, token) => {
+    if (board[index] === '') {
+      board[index] = token;
+    }
     displayCurrentBoard();
   };
 
@@ -27,9 +29,14 @@ const Player = (name, token) => {
   const getName = () => name;
   const getToken = () => token;
 
+  const playerMove = (index) => {
+    gameBoard.updateBoard(index, token);
+  };
+
   return {
     getName,
     getToken,
+    playerMove,
   };
 };
 
@@ -44,7 +51,7 @@ const gameController = (() => {
       cell.addEventListener('click', (e) => {
         e.preventDefault();
 
-        gameBoard.updateBoard(index, currentPlayer.getToken());
+        currentPlayer.playerMove(index);
       });
     });
     gameBoard.displayCurrentBoard();
