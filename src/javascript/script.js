@@ -29,10 +29,6 @@ const Player = (name, token) => {
   const getName = () => name;
   const getToken = () => token;
 
-  const playerMove = (index) => {
-    gameBoard.updateBoard(index, token);
-  };
-
   const displayPlayer = () => {
     const currentPlayerContainer = document.querySelector('.current-player');
 
@@ -42,7 +38,6 @@ const Player = (name, token) => {
   return {
     getName,
     getToken,
-    playerMove,
     displayPlayer,
   };
 };
@@ -51,10 +46,14 @@ const gameController = (() => {
   let gameOver = false;
   const playerOne = Player('Player 1', 'O');
   const playerTwo = Player('Player 2', 'X');
-  const currentPlayer = playerOne;
+  let currentPlayer = playerOne;
 
   const displayPlayerTurn = () => {
     currentPlayer.displayPlayer();
+  };
+
+  const switchPlayer = () => {
+    currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
   };
 
   const init = () => {
@@ -62,15 +61,17 @@ const gameController = (() => {
       cell.addEventListener('click', (e) => {
         e.preventDefault();
 
-        currentPlayer.playerMove(index);
+        gameBoard.updateBoard(index, currentPlayer.getToken());
+        switchPlayer();
+        displayPlayerTurn();
       });
     });
     gameBoard.displayCurrentBoard();
-    displayPlayerTurn();
   };
 
   const play = () => {
     init();
+    displayPlayerTurn();
   };
 
   return {
