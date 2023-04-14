@@ -10,8 +10,7 @@
   <link rel="stylesheet" href="src/stylesheets/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-  <script src="src/javascript/script.js" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <title>Tic Tac Toe</title>
 </head>
 
@@ -21,6 +20,19 @@
   </header>
   <main>
     <div class="container relative">
+      <div class="subtitle">
+        <div class="player">
+          <h2>Player 1</h2>
+          <p>O</p>
+        </div>
+        <div>
+          <p>VS</p>
+        </div>
+        <div class="player">
+          <h2>Player 2</h2>
+          <p>X</p>
+        </div>
+      </div>
       <div class="current-player"></div>
       <div class="board">
         <button aria-label="Upper left square" id="cell-0" class="board-cell" data-cell="0"></button>
@@ -39,6 +51,7 @@
       </div>
     </div>
   </main>
+  <script src="src/javascript/script.js"></script>
 </body>
 
 </html>
