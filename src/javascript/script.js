@@ -1,5 +1,5 @@
 const gameBoard = (() => {
-  const board = ['', '', '', '', '', '', '', '', ''];
+  let board = ['', '', '', '', '', '', '', '', ''];
   const winConditions = [
     [0, 1, 2],
     [3, 4, 5],
@@ -43,6 +43,10 @@ const gameBoard = (() => {
     displayCurrentBoard();
   };
 
+  const boardReset = () => {
+    board = ['', '', '', '', '', '', '', '', ''];
+  };
+
   return {
     getCells,
     displayCurrentBoard,
@@ -50,6 +54,7 @@ const gameBoard = (() => {
     isValidMove,
     isBoardFull,
     isBoardWin,
+    boardReset,
   };
 })();
 
@@ -73,6 +78,11 @@ const Player = (name, token) => {
 const modal = (() => {
   const modalContainer = document.querySelector('.modal');
   const message = document.querySelector('.message');
+  const resetBtn = document.querySelector('.reset-btn');
+
+  const hideModal = () => {
+    modalContainer.classList.add('hidden');
+  };
 
   const showModal = (result, player = null) => {
     if (result === 'win') {
@@ -84,8 +94,12 @@ const modal = (() => {
     modalContainer.classList.remove('hidden');
   };
 
+  const getResetBtn = () => resetBtn;
+
   return {
     showModal,
+    hideModal,
+    getResetBtn,
   };
 })();
 
@@ -134,8 +148,21 @@ const gameController = (() => {
     displayPlayerTurn();
   };
 
+  const resetGame = () => {
+    modal.getResetBtn().addEventListener('click', (e) => {
+      e.preventDefault();
+
+      gameBoard.boardReset();
+      gameOver = false;
+      currentPlayer = playerOne;
+      modal.hideModal();
+      init();
+    });
+  };
+
   const play = () => {
     init();
+    resetGame();
   };
 
   return {
