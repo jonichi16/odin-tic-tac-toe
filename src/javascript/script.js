@@ -2,6 +2,8 @@ const gameBoard = (() => {
   const board = ['', '', '', '', '', '', '', '', ''];
   const cells = document.querySelectorAll('.board-cell');
 
+  const getCells = () => cells;
+
   const displayCurrentBoard = () => {
     cells.forEach((cell, index) => {
       const updatedCell = cell;
@@ -11,9 +13,11 @@ const gameBoard = (() => {
 
   const updateBoard = (move, token) => {
     board[move] = token;
+    displayCurrentBoard();
   };
 
   return {
+    getCells,
     displayCurrentBoard,
     updateBoard,
   };
@@ -35,8 +39,19 @@ const gameController = (() => {
   const playerTwo = Player('Player 2', 'X');
   const currentPlayer = playerOne;
 
-  const play = () => {
+  const init = () => {
+    gameBoard.getCells().forEach((cell, index) => {
+      cell.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        gameBoard.updateBoard(index, currentPlayer.getToken());
+      });
+    });
     gameBoard.displayCurrentBoard();
+  };
+
+  const play = () => {
+    init();
   };
 
   return {
