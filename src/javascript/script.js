@@ -70,6 +70,25 @@ const Player = (name, token) => {
   };
 };
 
+const modal = (() => {
+  const modalContainer = document.querySelector('.modal');
+  const message = document.querySelector('.message');
+
+  const showModal = (result, player = null) => {
+    if (result === 'win') {
+      message.innerHTML = `Congratulations! <span class="winner">${player.getName()} win!</span>`;
+    } else {
+      message.textContent = "It's a TIE!";
+    }
+
+    modalContainer.classList.remove('hidden');
+  };
+
+  return {
+    showModal,
+  };
+})();
+
 const gameController = (() => {
   let gameOver = false;
   const playerOne = Player('Player 1', 'O');
@@ -91,8 +110,10 @@ const gameController = (() => {
   const gameCheck = (player) => {
     if (gameBoard.isBoardWin(player.getToken())) {
       gameOver = true;
+      modal.showModal('win', player);
     } else if (gameBoard.isBoardFull()) {
       gameOver = true;
+      modal.showModal('tie');
     }
   };
 
