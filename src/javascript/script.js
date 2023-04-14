@@ -33,10 +33,17 @@ const Player = (name, token) => {
     gameBoard.updateBoard(index, token);
   };
 
+  const displayPlayer = () => {
+    const currentPlayerContainer = document.querySelector('.current-player');
+
+    currentPlayerContainer.textContent = ` ${name}'s Turn `;
+  };
+
   return {
     getName,
     getToken,
     playerMove,
+    displayPlayer,
   };
 };
 
@@ -45,6 +52,10 @@ const gameController = (() => {
   const playerOne = Player('Player 1', 'O');
   const playerTwo = Player('Player 2', 'X');
   const currentPlayer = playerOne;
+
+  const displayPlayerTurn = () => {
+    currentPlayer.displayPlayer();
+  };
 
   const init = () => {
     gameBoard.getCells().forEach((cell, index) => {
@@ -55,6 +66,7 @@ const gameController = (() => {
       });
     });
     gameBoard.displayCurrentBoard();
+    displayPlayerTurn();
   };
 
   const play = () => {

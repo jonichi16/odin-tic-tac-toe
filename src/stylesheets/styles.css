@@ -11,6 +11,16 @@ h1 {
   padding: 1em 0;
 }
 
+.current-player {
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.current-player::before,
+.current-player::after {
+  content: '~';
+}
+
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
